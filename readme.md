@@ -18,17 +18,22 @@ Application (with the embedded H2 database) is ready to be used ! You can access
 ### About the thing I did with this project
 
 1. **Fix bugs**
-   After clone this project and setting it up, I tested all endpoints with POSTMAN and found below issues: - The first issue is POST /employees doenst save any data to H2 database. So I add @RequestBody to POST /employees. - The second issue is the way PUT /employees being executed. Spring Boot controller should do tasks like request-mapping and validation, but PUT /employees's controller was contained logic operation. With this issue, I moved logic operation part to service layer. - The third problem I found is instead of updating database records, PUT /employees creates new record with updated information. So I updated service layer's operation to get the target record then update it with new information.
+   After cloning and setting up the project, I tested all endpoints using POSTMAN and identified several issues that needed to be addressed.
+   Firstly, the `POST /employees` endpoint was not saving any data to the H2 database. To fix this, I added the `@RequestBody` annotation to the endpoint.
+   Secondly, the `PUT /employees` endpoint was containing logic operations in the controller instead of delegating them to the service layer. This is not best practice, so I moved the logic operation part to the service layer to ensure separation of concerns.
+   Thirdly, the `PUT /employees` endpoint was creating a new record in the database instead of updating an existing one with the updated information. To address this, I updated the service layer's operation to retrieve the target record and update it with the new information.
+   By addressing these issues, we were able to improve the functionality and maintainability of the application.
 
 2. **Add unit tests for each endpoints**
-   I did a research and found that mockmvc is the most popular API unit test framework for Spring Boot. After getting the first test done with GET /employees, I implemented the rest of them.
+   After conducting research, I discovered that the `MockMvc` is a widely used unit test framework for Spring Boot applications. I successfully implemented the first test using `MockMvc` to test the `GET /employees` endpoint and proceeded to write additional tests for the remaining endpoints.
 
 3. **Implement caching**
-   After considering the best-pratices with caching, I decided that I would only implement cache for GET requests. Because they are read-heavy and have a low rate of change.
-   With a list of which endpoints should be implemented with cache, I look up for how to implement cache with Spring Boot. I found `@Cacheable` as an annotation in the Spring Framework for Java that provides declarative caching support. It's also very easy to implement.
+   After researching best practices for caching, I determined that implementing cache for `GET` requests would be the most effective approach. `GET` requests are typically read-heavy and have a low rate of change, making them well-suited for caching.
+   To implement caching in the application, I explored options available in the Spring Framework for Java and found that the `@Cacheable` annotation provides declarative caching support and is easy to implement.
+   By using the `@Cacheable` annotation in the appropriate places, we can cache the results of `GET` requests and improve the performance and efficiency of the application. This approach is in line with industry best-practices for caching and can help to ensure that the application is responsive and scalable.
 
 4. **Add POSTMAN collection**
-   This is optional but for someone who love POSTMAN like me, I hope they can find my POSTMAN collection is useful :)
+   This is optional but for other developers who love POSTMAN like me, I hope they can find my POSTMAN collection is useful :)
 
 ### About the thing I would have done if I had more time
 
