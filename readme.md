@@ -10,43 +10,30 @@ Application (with the embedded H2 database) is ready to be used ! You can access
 
 > Don't forget to set the `JDBC URL` value as `jdbc:h2:mem:testdb` for H2 UI.
 
+#### My experience in Java
 
+- With Java I'm a beginner. I took C# lessons in college and I found C# quite similar to Java.
+- About Spring Boot I heard it from my colleagues and friends but never use it before. This is my first hands-on with it
 
-### Instructions
+### About the thing I did with this project
 
-- download the zip file of this project
-- create a repository in your own github named 'java-challenge'
-- clone your repository in a folder on your machine
-- extract the zip file in this folder
-- commit and push
+1. **Fix bugs**
+   After clone this project and setting it up, I tested all endpoints with POSTMAN and found below issues: - The first issue is POST /employees doenst save any data to H2 database. So I add @RequestBody to POST /employees. - The second issue is the way PUT /employees being executed. Spring Boot controller should do tasks like request-mapping and validation, but PUT /employees's controller was contained logic operation. With this issue, I moved logic operation part to service layer. - The third problem I found is instead of updating database records, PUT /employees creates new record with updated information. So I updated service layer's operation to get the target record then update it with new information.
 
-- Enhance the code in any ways you can see, you are free! Some possibilities:
-  - Add tests
-  - Change syntax
-  - Protect controller end points
-  - Add caching logic for database calls
-  - Improve doc and comments
-  - Fix any bug you might find
-- Edit readme.md and add any comments. It can be about what you did, what you would have done if you had more time, etc.
-- Send us the link of your repository.
+2. **Add unit tests for each endpoints**
+   I did a research and found that mockmvc is the most popular API unit test framework for Spring Boot. After getting the first test done with GET /employees, I implemented the rest of them.
 
-#### Restrictions
-- use java 8
+3. **Implement caching**
+   After considering the best-pratices with caching, I decided that I would only implement cache for GET requests. Because they are read-heavy and have a low rate of change.
+   With a list of which endpoints should be implemented with cache, I look up for how to implement cache with Spring Boot. I found `@Cacheable` as an annotation in the Spring Framework for Java that provides declarative caching support. It's also very easy to implement.
 
+4. **Add POSTMAN collection**
+   This is optional but for someone who love POSTMAN like me, I hope they can find my POSTMAN collection is useful :)
 
-#### What we will look for
-- Readability of your code
-- Documentation
-- Comments in your code 
-- Appropriate usage of spring boot
-- Appropriate usage of packages
-- Is the application running as expected
-- No performance issues
+### About the thing I would have done if I had more time
 
-#### Your experience in Java
+1. **Add autithencation to protect endpoints**
+   Unfortunately, due to time constraints, I was unable to complete the implementation of JSON Web Tokens (JWT) with the current application. However, I think I finished planning on how to implement it. If I had more time I will add necessary dependencies, creat a `User` service, creating a `JwtTokenUtil` class, configuring Spring Security to use JWT authentication, protecting endpoints with a white list of domain, creatt a login/signup endpoint, and test the authentication flow to ensure everything is working as expected.
 
-Please let us know more about your Java experience in a few sentences. For example:
-
-- I have 3 years experience in Java and I started to use Spring Boot from last year
-- I'm a beginner and just recently learned Spring Boot
-- I know Spring Boot very well and have been using it for many years
+2. **Create exception handle system**
+   Instead of leaving exection handling to default, I want to implement more proper exception handle system. For example, I propose creating a custom exception called `EmployeeNotFoundException`. This exception can be used to handle cases where the employee with a given ID cannot be found, and can be implemented in functions such as `getEmployee()`, `deleteEmployee()`, and `updateEmployee()`. By using a custom exception, we can provide more informative error messages to the user and handle exceptions in a more consistent and structured way across different parts of our application. This can improve the overall reliability and maintainability of our code."

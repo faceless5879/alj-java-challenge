@@ -107,6 +107,11 @@ public class ApiDemoApplicationTests {
 						.content(objectMapper.writeValueAsString(employee)))
 				.andExpect(status().isOk());
 
-//		then(employeeService).should(times(1)).updateEmployee(1L, employee);
+		given(employeeService.getEmployee(1L)).willReturn(employee);
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/employees/1")
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.name").value("Test user"))
+				.andExpect(jsonPath("$.salary").value(1000));
 	}
 }
